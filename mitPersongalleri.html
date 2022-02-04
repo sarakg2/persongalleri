@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <section class="persongalleri"></section>
+    <template>
+      <article class="personer">
+        <h2></h2>
+        <img src="" alt="" />
+        <p class="email"></p>
+        <p class="titler"></p>
+      </article>
+    </template>
+    <script>
+      const url = "https://persongalleri-0df1.restdb.io/rest/personliste ";
+      const options = {
+        headers: { "x-apikey": "61fcfff83f215f310a37be98" },
+      };
+
+      document.addEventListener("DOMContentLoaded", start);
+      function start() {
+        hentdata();
+      }
+
+      async function hentdata() {
+        const resultat = await fetch(url, options);
+        const json = await resultat.json();
+        vis(json);
+      }
+
+      function vis(personer) {
+        console.log(personer);
+        const persongalleri = document.querySelector(".persongalleri");
+        const person_data = document.querySelector("template");
+        personer.forEach((person) => {
+          const klon = person_data.cloneNode(true).content;
+          klon.querySelector("h2").textContent = person.fornavn;
+          klon.querySelector("img").src = "faces/" + person.billede;
+          /*  klon.querySelector("img").src = alleDyr.billede; */
+          klon.querySelector(".email").textContent = person.email;
+          klon.querySelector(".titler").textContent = person.titel;
+          persongalleri.appendChild(klon);
+        });
+      }
+    </script>
+  </body>
+</html>
